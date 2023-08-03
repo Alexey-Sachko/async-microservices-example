@@ -2,9 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from './env.validation';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const apiPath = 'api/v1';
 

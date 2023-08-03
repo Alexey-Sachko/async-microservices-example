@@ -9,7 +9,6 @@ import { EnvironmentVariables } from './env.validation';
     ConfigModule.forRoot({
       validate: makeValidatorForClass(EnvironmentVariables),
       isGlobal: true,
-      ignoreEnvFile: true,
     }),
     HealthCheckModule,
   ],
