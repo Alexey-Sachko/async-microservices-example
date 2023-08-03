@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "workspaces": [
+    "api",
+    "worker"
+  ],
+  "scripts": {
+    "api": "yarn workspace api",
+    "worker": "yarn workspace worker",
+    "lint:fix": "yarn workspaces foreach -pvt run lint --fix",
+    "lint": "yarn workspaces foreach -pvt run lint",
+    "lint-staged": "yarn workspaces foreach -vt run lint-staged",
+    "install-all": "yarn workspaces foreach -pvt run install",
+    "build-all": "yarn workspaces foreach -pvt run build"
+  },
+  "packageManager": "yarn@3.4.1"
+}

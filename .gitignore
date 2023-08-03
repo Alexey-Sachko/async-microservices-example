@@ -1,0 +1,20 @@
+node_modules
+.idea
+dist
+yarn-error.log
+test/*
+.env.rc
+.docker.env.rc
+.env.test.local.rc
+.DS_Store
+*.tsbuildinfo
+
+# yarn
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.yarn/*
+.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
