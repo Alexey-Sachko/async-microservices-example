@@ -3,9 +3,8 @@ node_modules
 dist
 yarn-error.log
 test/*
-.env.rc
+.env
 .docker.env.rc
-.env.test.local.rc
 .DS_Store
 *.tsbuildinfo
 

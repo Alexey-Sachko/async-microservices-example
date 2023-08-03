@@ -1,10 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { HealthCheckModule } from 'modules/health-check/health-check.module';
+import { ReportModule } from 'modules/report/report.module';
+import { EnvironmentVariables } from './env.validation';
+import { makeValidatorForClass } from './validate';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      validate: makeValidatorForClass(EnvironmentVariables),
+      isGlobal: true,
+      ignoreEnvFile: true,
+    }),
+    HealthCheckModule,
+    ReportModule,
+  ],
 })
 export class AppModule {}
