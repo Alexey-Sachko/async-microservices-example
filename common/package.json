@@ -18,7 +18,8 @@
     "./logger": "./dist/logger/index.js",
     "./exception": "./dist/exception/index.js",
     "./environment": "./dist/environment/index.js",
-    "./decorators": "./dist/decorators/index.js"
+    "./decorators": "./dist/decorators/index.js",
+    "./rabbit": "./dist/rabbit/index.js"
   },
   "typesVersions": {
     "*": {
@@ -36,6 +37,9 @@
       ],
       "decorators": [
         "dist/decorators/index.d.ts"
+      ],
+      "rabbit": [
+        "dist/rabbit/index.d.ts"
       ]
     }
   },
@@ -47,7 +51,10 @@
   "dependencies": {
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
-    "@nestjs/core": "^10.0.0"
+    "@nestjs/core": "^10.0.0",
+    "@types/cli-color": "^2.0.2",
+    "cli-color": "^2.0.3",
+    "winston": "^3.10.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

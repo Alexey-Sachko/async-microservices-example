@@ -3,17 +3,17 @@ import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Transport } from '@nestjs/microservices';
 import { EnvironmentVariables } from './env.validation';
+import { Logger } from 'common/logger';
 
 const apiPath = 'api/v1';
 
 async function bootstrap() {
   const { AppModule } = await import('./app.module');
-  // TODO: add logger
-  const app = await NestFactory.create(AppModule);
+  const logger = new Logger();
+  const app = await NestFactory.create(AppModule, { logger });
   const configService = app.get(ConfigService<EnvironmentVariables, true>);
   app.setGlobalPrefix(apiPath);
 
-  // Then combine it with a RabbitMQ microservice
   app.connectMicroservice({
     transport: Transport.RMQ,
     options: {
@@ -21,6 +21,7 @@ async function bootstrap() {
       queue: configService.get('RABBIT_MQ_QUEUE', { infer: true }),
       queueOptions: { durable: false },
     },
+    logger,
   });
 
   const options = new DocumentBuilder()
@@ -37,7 +38,5 @@ async function bootstrap() {
     configService.get('SERVER_PORT', { infer: true }),
   );
   server.keepAliveTimeout = 60000;
-
-  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

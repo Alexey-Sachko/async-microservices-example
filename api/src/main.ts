@@ -2,13 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from './env.validation';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger } from 'common/logger';
 
 const apiPath = 'api/v1';
 
 async function bootstrap() {
   const { AppModule } = await import('./app.module');
-  // TODO: add logger
-  const app = await NestFactory.create(AppModule);
+  const logger = new Logger();
+  const app = await NestFactory.create(AppModule, { logger });
   const configService = app.get(ConfigService<EnvironmentVariables, true>);
   app.setGlobalPrefix(apiPath);
 
