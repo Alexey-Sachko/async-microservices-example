@@ -2,10 +2,12 @@
   "private": true,
   "workspaces": [
     "api",
+    "common",
     "worker"
   ],
   "scripts": {
     "api": "yarn workspace api",
+    "common": "yarn workspace common",
     "worker": "yarn workspace worker",
     "lint:fix": "yarn workspaces foreach -pvt run lint --fix",
     "lint": "yarn workspaces foreach -pvt run lint",

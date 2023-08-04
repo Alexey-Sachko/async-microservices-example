@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { HealthCheckModule } from 'modules/health-check/health-check.module';
 import { ReportModule } from 'modules/report/report.module';
 import { EnvironmentVariables } from './env.validation';
-import { makeValidatorForClass } from './validate';
+import { makeValidatorForClass } from 'common/environment';
+import { HealthController } from 'common/health';
 
 @Module({
   imports: [
@@ -11,8 +11,8 @@ import { makeValidatorForClass } from './validate';
       validate: makeValidatorForClass(EnvironmentVariables),
       isGlobal: true,
     }),
-    HealthCheckModule,
     ReportModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}

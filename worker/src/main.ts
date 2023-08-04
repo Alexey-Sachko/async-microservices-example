@@ -37,5 +37,7 @@ async function bootstrap() {
     configService.get('SERVER_PORT', { infer: true }),
   );
   server.keepAliveTimeout = 60000;
+
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
