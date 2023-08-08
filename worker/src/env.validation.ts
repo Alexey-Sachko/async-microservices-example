@@ -8,7 +8,10 @@ export class EnvironmentVariables {
   RABBITMQ_URL!: string;
 
   @IsString()
-  RABBIT_MQ_QUEUE!: string;
+  RABBIT_MQ_API_QUEUE!: string;
+
+  @IsString()
+  RABBIT_MQ_WORKER_QUEUE!: string;
 
   @IsString()
   AWS_S3_BUCKET!: string;

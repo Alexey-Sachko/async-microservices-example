@@ -1,10 +1,5 @@
 import { Controller } from '@nestjs/common';
-import {
-  Ctx,
-  MessagePattern,
-  Payload,
-  RmqContext,
-} from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { Logger } from 'common/logger';
 import { GenerateReportMessage } from 'common/rabbit';
 import { ReportService } from './report.service';
@@ -22,11 +17,8 @@ export class ReportController {
   generateReport(
     @Payload()
     payload: GenerateReportMessage,
-
-    @Ctx()
-    context: RmqContext,
   ) {
     this.logger.log(`Received message: ${JSON.stringify(payload)}`);
-    return this.reportService.generateProductsReport();
+    return this.reportService.generateProductsReport(payload);
   }
 }

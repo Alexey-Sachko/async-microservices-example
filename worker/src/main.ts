@@ -18,8 +18,8 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [configService.get('RABBITMQ_URL', { infer: true })],
-      queue: configService.get('RABBIT_MQ_QUEUE', { infer: true }),
-      queueOptions: { durable: false },
+      queue: configService.get('RABBIT_MQ_WORKER_QUEUE', { infer: true }),
+      prefetchCount: 1,
     },
     logger,
   });
