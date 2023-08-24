@@ -11,18 +11,24 @@ services:
       - db-data:/var/lib/postgresql1/data:rw
     ports:
       - '5433:5432'
+    networks:
+      - common
 
   rabbitmq:
     image: rabbitmq:3-management
+    container_name: reports-rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
     ports:
       - '5672:5672'
       - '8080:15672'
+    networks:
+      - common
 
   minio:
     image: quay.io/minio/minio:RELEASE.2022-08-13T21-54-44Z
+    container_name: reports-minio
     command: minio server /data --console-address :9001
     ports:
       - "9000:9000"
@@ -30,6 +36,8 @@ services:
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
+    networks:
+      - common
   
   createbuckets:
     image: minio/mc
@@ -43,6 +51,55 @@ services:
       /usr/bin/mc anonymous set download myminio/my-bucket;
       exit 0;
       "
+  
+  api:
+    build:
+      context: .
+      dockerfile: ./api/docker/Dockerfile
+    container_name: api-backend
+    environment:
+      - SERVER_PORT=7070
+      - TYPEORM_SYNCHRONIZE=true
+      - RABBITMQ_URL=amqp://admin:admin@reports-rabbitmq:5672
+      - RABBIT_MQ_API_QUEUE=api_queue
+      - RABBIT_MQ_WORKER_QUEUE=worker_queue
+      - TYPEORM_URL=postgres://reports:reportspassword@reports-db:5433/reports
+    ports:
+      - '7070:7070'
+    depends_on:
+      - db
+      - rabbitmq
+    networks:
+      - common
+  
+  worker:
+    build:
+      context: .
+      dockerfile: ./worker/docker/Dockerfile
+    container_name: worker-backend
+    environment:
+      - SERVER_PORT=7071
+      - RABBITMQ_URL=amqp://admin:admin@reports-rabbitmq:5672
+      - RABBIT_MQ_API_QUEUE=api_queue
+      - RABBIT_MQ_WORKER_QUEUE=worker_queue
+      - RABBITMQ_USER=admin
+      - RABBITMQ_PASSWORD=admin
+      - AWS_S3_BUCKET=my-bucket
+      - AWS_ACCESS_KEY_ID=minio
+      - AWS_SECRET_ACCESS_KEY=minio123
+      - AWS_ENDPOINT_URL=http://reports-minio:9000
+      - SOURCE_API_URL=https://dummyjson.com
+    ports:
+      - '7071:7071'
+    depends_on:
+      - minio
+      - rabbitmq
+    networks:
+      - common
       
 volumes:
   db-data: {}
+
+networks:
+    common:
+        driver: bridge

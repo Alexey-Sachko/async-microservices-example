@@ -17,14 +17,5 @@ export class EnvironmentVariables {
   TYPEORM_URL!: string;
 
   @IsString()
-  TYPEORM_ENTITIES!: string;
-
-  @IsString()
-  TYPEORM_MIGRATIONS!: string;
-
-  @IsString()
-  TYPEORM_MIGRATIONS_DIR!: string;
-
-  @IsString()
   TYPEORM_SYNCHRONIZE!: string;
 }
